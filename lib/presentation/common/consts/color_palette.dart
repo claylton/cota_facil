@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 class ColorPalette {
@@ -6,5 +5,6 @@ class ColorPalette {
   static Color primary100 = const Color(0XFF2752E7);
 
   //*BASE COLOR
+  static Color black = const Color(0XFF2C3131);
   static Color withe = const Color(0XFFFFFFFF);
 }

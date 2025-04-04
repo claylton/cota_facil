@@ -19,9 +19,8 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       routes: {
         '/': (context) => const SplashScreenPage(),
-        'home_page': (context) => const HomePage(title: 'Flutter Demo Home Page')
+        'home_page': (context) => const HomePage(),
       },
     );
   }
 }
-
