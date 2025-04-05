@@ -2,7 +2,7 @@
 import 'dart:collection';
 
 import 'package:cota_facil/presentation/common/consts/color_palette.dart';
-import 'package:cota_facil/presentation/common/currency_to_string.dart';
+import 'package:cota_facil/presentation/common/utils/currency_utils.dart';
 import 'package:country_flags/country_flags.dart';
 import 'package:flutter/material.dart';
 
@@ -30,7 +30,7 @@ class CountryDropdownWidget extends StatelessWidget {
           leadingIcon: Padding(
             padding: const EdgeInsets.all(16.0),
             child: CountryFlag.fromCountryCode(
-              getCountryCode(currencyCode: currencyName),
+              CurrencyUtils.getCountryCode(currencyCode: currencyName),
               shape: const Circle(),
             ),
           ),
@@ -45,8 +45,9 @@ class CountryDropdownWidget extends StatelessWidget {
             dropdownMenuEntries: menuEntries,
             width: double.infinity,
             onSelected: onCurrencyChanged,
+            menuHeight: 340,
             leadingIcon: CountryFlag.fromCountryCode(
-              getCountryCode(currencyCode: selectedCurrency),
+              CurrencyUtils.getCountryCode(currencyCode: selectedCurrency),
               shape: const Circle(),
             ),
             inputDecorationTheme: const InputDecorationTheme(
