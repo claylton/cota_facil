@@ -1,0 +1,13 @@
+{
+    "configurations": [
+        {
+            "name": "Launch",
+            "request": "launch",
+            "type": "dart",
+            "toolArgs": [
+                "--dart-define-from-file",
+                "config.json"
+            ]
+        }
+    ]
+}

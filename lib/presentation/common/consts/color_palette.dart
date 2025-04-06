@@ -6,5 +6,6 @@ class ColorPalette {
 
   //*BASE COLOR
   static Color black = const Color(0XFF2C3131);
+  static Color black60 = const Color(0XFFA9A9A9);
   static Color withe = const Color(0XFFFFFFFF);
 }

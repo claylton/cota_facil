@@ -5,14 +5,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+// ignore: must_be_immutable
 class ResultValueWidget extends StatefulWidget {
-  final String selectedCurrency;
+  final String selectedCurrencyCode;
   final Function(String?) onCurrencyChanged;
+  final double? convertedValue;
+  late MoneyMaskedTextController moneyController;
 
-  const ResultValueWidget({
+  ResultValueWidget({
     super.key,
-    required this.selectedCurrency,
+    required this.selectedCurrencyCode,
     required this.onCurrencyChanged,
+    required this.convertedValue,
+    required this.moneyController,
   });
 
   @override
@@ -20,22 +25,15 @@ class ResultValueWidget extends StatefulWidget {
 }
 
 class _ResultValueWidgetState extends State<ResultValueWidget> {
-  late MoneyMaskedTextController moneyController;
   late String selectedCurrency;
 
-  Map<String, String> currencySymbols = {
-    'BRL': 'R\$ ',
-    'USD': '\$ ',
-    'CAD': 'C\$ ',
-    'AUD': 'A\$ ',
-    'BGN': 'лв ',
-  };
-
   @override
-  void initState() {
-    super.initState();
+  void didUpdateWidget(covariant ResultValueWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
 
-    moneyController = MoneyMaskedTextController(decimalSeparator: ',', thousandSeparator: '.');
+    if (widget.convertedValue != null) {
+      widget.moneyController.updateValue(widget.convertedValue!);
+    }
   }
 
   void handleCurrencyChange(String? newCurrency) {
@@ -44,9 +42,9 @@ class _ResultValueWidgetState extends State<ResultValueWidget> {
         selectedCurrency = newCurrency;
 
         // Atualiza o símbolo da moeda no controller
-        final value = moneyController.numberValue;
-        moneyController.updateValue(0); // limpa antes de aplicar símbolo novo
-        moneyController = MoneyMaskedTextController(
+        final value = widget.moneyController.numberValue;
+        widget.moneyController.updateValue(0); // limpa antes de aplicar símbolo novo
+        widget.moneyController = MoneyMaskedTextController(
           decimalSeparator: ',',
           thousandSeparator: '.',
           initialValue: value,
@@ -59,19 +57,12 @@ class _ResultValueWidgetState extends State<ResultValueWidget> {
 
   @override
   void dispose() {
-    moneyController.dispose();
+    widget.moneyController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    // moneyController.addListener(() {
-    //   final newText = moneyController.text;
-    //   moneyController.selection = TextSelection.fromPosition(
-    //     TextPosition(offset: newText.length),
-    //   );
-    // });
-
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       decoration: BoxDecoration(
@@ -85,15 +76,16 @@ class _ResultValueWidgetState extends State<ResultValueWidget> {
             flex: 2,
             child: CountryDropdownWidget(
               currencyList: CurrencyUtils.currencyList,
-              selectedCurrency: widget.selectedCurrency,
+              selectedCurrency: widget.selectedCurrencyCode,
               onCurrencyChanged: handleCurrencyChange,
             ),
           ),
           Expanded(
             flex: 4,
             child: TextField(
-              enabled: false,
-              // controller: moneyController,
+              enabled: widget.moneyController.numberValue == 0.0 ? false : true,
+              readOnly: true,
+              controller: widget.moneyController.numberValue == 0.0 ? null : widget.moneyController,
               keyboardType: TextInputType.number,
               style: GoogleFonts.roboto(
                 fontWeight: FontWeight.w500,
@@ -102,13 +94,12 @@ class _ResultValueWidgetState extends State<ResultValueWidget> {
               decoration: InputDecoration(
                 labelText: "Escolha uma moeda",
                 labelStyle: GoogleFonts.roboto(color: ColorPalette.black),
-                prefixText: currencySymbols[widget.selectedCurrency],
+                prefixText: CurrencyUtils.getCurrencySymbols(currencyCode: widget.selectedCurrencyCode),
                 prefixStyle: GoogleFonts.roboto(
                   fontWeight: FontWeight.w500,
                   fontSize: 18,
                 ),
-                enabledBorder: InputBorder.none,
-                focusedBorder: InputBorder.none,
+                border: InputBorder.none,
               ),
             ),
           ),

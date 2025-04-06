@@ -30,7 +30,7 @@ class CountryDropdownWidget extends StatelessWidget {
           leadingIcon: Padding(
             padding: const EdgeInsets.all(16.0),
             child: CountryFlag.fromCountryCode(
-              CurrencyUtils.getCountryCode(currencyCode: currencyName),
+              CurrencyUtils.getCountryCode(currencyCode: currencyName.split(')').first.replaceAll('(', '')),
               shape: const Circle(),
             ),
           ),
@@ -46,6 +46,7 @@ class CountryDropdownWidget extends StatelessWidget {
             width: double.infinity,
             onSelected: onCurrencyChanged,
             menuHeight: 340,
+            menuStyle: MenuStyle(backgroundColor: WidgetStateProperty.all(ColorPalette.withe)),
             leadingIcon: CountryFlag.fromCountryCode(
               CurrencyUtils.getCountryCode(currencyCode: selectedCurrency),
               shape: const Circle(),

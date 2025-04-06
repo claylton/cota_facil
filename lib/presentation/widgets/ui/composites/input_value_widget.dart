@@ -5,14 +5,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+// ignore: must_be_immutable
 class InputValueWidget extends StatefulWidget {
-  final String selectedCurrency;
+  final String selectedCurrencyCode;
   final Function(String?) onCurrencyChanged;
+  final void Function(double value)? onValueChanged;
+  late MoneyMaskedTextController moneyController;
 
-  const InputValueWidget({
+  InputValueWidget({
     super.key,
-    required this.selectedCurrency,
+    required this.selectedCurrencyCode,
     required this.onCurrencyChanged,
+    required this.onValueChanged,
+    required this.moneyController,
   });
 
   @override
@@ -20,15 +25,7 @@ class InputValueWidget extends StatefulWidget {
 }
 
 class _InputValueWidgetState extends State<InputValueWidget> {
-  late MoneyMaskedTextController moneyController;
   late String selectedCurrency;
-
-  @override
-  void initState() {
-    super.initState();
-
-    moneyController = MoneyMaskedTextController(decimalSeparator: ',', thousandSeparator: '.');
-  }
 
   void handleCurrencyChange(String? newCurrency) {
     if (newCurrency != null) {
@@ -36,9 +33,9 @@ class _InputValueWidgetState extends State<InputValueWidget> {
         selectedCurrency = newCurrency;
 
         // Atualiza o símbolo da moeda no controller
-        final value = moneyController.numberValue;
-        moneyController.updateValue(0); // limpa antes de aplicar símbolo novo
-        moneyController = MoneyMaskedTextController(
+        final value = widget.moneyController.numberValue;
+        widget.moneyController.updateValue(0); // limpa antes de aplicar símbolo novo
+        widget.moneyController = MoneyMaskedTextController(
           decimalSeparator: ',',
           thousandSeparator: '.',
           initialValue: value,
@@ -51,17 +48,20 @@ class _InputValueWidgetState extends State<InputValueWidget> {
 
   @override
   void dispose() {
-    moneyController.dispose();
+    widget.moneyController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    moneyController.addListener(() {
-      final newText = moneyController.text;
-      moneyController.selection = TextSelection.fromPosition(
+    widget.moneyController.addListener(() {
+      final newText = widget.moneyController.text;
+      widget.moneyController.selection = TextSelection.fromPosition(
         TextPosition(offset: newText.length),
       );
+
+      final value = widget.moneyController.numberValue;
+      widget.onValueChanged?.call(value);
     });
 
     return Container(
@@ -77,14 +77,15 @@ class _InputValueWidgetState extends State<InputValueWidget> {
             flex: 2,
             child: CountryDropdownWidget(
               currencyList: CurrencyUtils.currencyList,
-              selectedCurrency: widget.selectedCurrency,
+              selectedCurrency: widget.selectedCurrencyCode,
               onCurrencyChanged: handleCurrencyChange,
             ),
           ),
           Expanded(
             flex: 4,
             child: TextField(
-              controller: moneyController,
+              enabled: widget.selectedCurrencyCode.isNotEmpty,
+              controller: widget.moneyController,
               keyboardType: TextInputType.number,
               cursorColor: ColorPalette.primary100,
               style: GoogleFonts.roboto(
@@ -92,15 +93,14 @@ class _InputValueWidgetState extends State<InputValueWidget> {
                 fontSize: 18,
               ),
               decoration: InputDecoration(
-                labelText: "Quantidade desejada",
+                labelText: "Escolha a moeda e digite o valor",
                 labelStyle: GoogleFonts.roboto(color: ColorPalette.black),
-                prefixText: "${widget.selectedCurrency} ",
+                prefixText: CurrencyUtils.getCurrencySymbols(currencyCode: widget.selectedCurrencyCode),
                 prefixStyle: GoogleFonts.roboto(
                   fontWeight: FontWeight.w500,
                   fontSize: 18,
                 ),
-                enabledBorder: InputBorder.none,
-                focusedBorder: InputBorder.none,
+                border: InputBorder.none,
               ),
             ),
           ),

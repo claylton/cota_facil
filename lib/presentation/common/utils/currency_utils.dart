@@ -1,38 +1,38 @@
 class CurrencyUtils {
   static List<String> currencyList = [
-    "AUD", // Dólar Australiano
-    "BGN", // Lev Búlgaro
-    "BRL", // Real Brasileiro
-    "CAD", // Dólar Canadense
-    "CHF", // Franco Suíço
-    "CNY", // Yuan Chinês
-    "CZK", // Coroa Checa
-    "DKK", // Coroa Dinamarquesa
-    "EUR", // Euro
-    "GBP", // Libra Esterlina
-    "HKD", // Dólar de Hong Kong
-    "HRK", // Kuna Croata
-    "HUF", // Forint Húngaro
-    "IDR", // Rupia Indonésia
-    "ILS", // Novo Shekel Israelense
-    "INR", // Rupia Indiana
-    "ISK", // Coroa Islandesa
-    "JPY", // Iene Japonês
-    "KRW", // Won Sul-Coreano
-    "MXN", // Peso Mexicano
-    "MYR", // Ringgit Malaio
-    "NOK", // Coroa Norueguesa
-    "NZD", // Dólar Neozelandês
-    "PHP", // Peso Filipino
-    "PLN", // Złoty Polonês
-    "RON", // Leu Romeno
-    "RUB", // Rublo Russo
-    "SEK", // Coroa Sueca
-    "SGD", // Dólar de Singapura
-    "THB", // Baht Tailandês
-    "TRY", // Lira Turca
-    "USD", // Dólar Americano
-    "ZAR", // Rand Sul-Africano
+    "(AUD) Dólar Australiano",
+    "(BGN) Lev Búlgaro",
+    "(BRL) Real Brasileiro",
+    "(CAD) Dólar Canadense",
+    "(CHF) Franco Suíço",
+    "(CNY) Yuan Chinês",
+    "(CZK) Coroa Checa",
+    "(DKK) Coroa Dinamarquesa",
+    "(EUR) Euro",
+    "(GBP) Libra Esterlina",
+    "(HKD) Dólar de Hong Kong",
+    "(HRK) Kuna Croata",
+    "(HUF) Forint Húngaro",
+    "(IDR) Rupia Indonésia",
+    "(ILS) Novo Shekel Israelense",
+    "(INR) Rupia Indiana",
+    "(ISK) Coroa Islandesa",
+    "(JPY) Iene Japonês",
+    "(KRW) Won Sul-Coreano",
+    "(MXN) Peso Mexicano",
+    "(MYR) Ringgit Malaio",
+    "(NOK) Coroa Norueguesa",
+    "(NZD) Dólar Neozelandês",
+    "(PHP) Peso Filipino",
+    "(PLN) Złoty Polonês",
+    "(RON) Leu Romeno",
+    "(RUB) Rublo Russo",
+    "(SEK) Coroa Sueca",
+    "(SGD) Dólar de Singapura",
+    "(THB) Baht Tailandês",
+    "(TRY) Lira Turca",
+    "(USD) Dólar Americano",
+    "(ZAR) Rand Sul-Africano",
   ];
 
   static Map<String, String> currencyToCountry = {
@@ -71,7 +71,47 @@ class CurrencyUtils {
     "ZAR": "ZA", // Rand Sul-Africano → África do Sul
   };
 
+  static Map<String, String> currencySymbolsList = {
+    'AUD': 'A\$ ', // Dólar Australiano
+    'BGN': 'лв ', // Lev Búlgaro
+    'BRL': 'R\$ ', // Real Brasileiro
+    'CAD': 'C\$ ', // Dólar Canadense
+    'CHF': 'CHF ', // Franco Suíço
+    'CNY': '¥ ', // Yuan Chinês
+    'CZK': 'Kč ', // Coroa Checa
+    'DKK': 'kr ', // Coroa Dinamarquesa
+    'EUR': '€ ', // Euro
+    'GBP': '£ ', // Libra Esterlina
+    'HKD': 'HK\$ ', // Dólar de Hong Kong
+    'HRK': 'kn ', // Kuna Croata
+    'HUF': 'Ft ', // Forint Húngaro
+    'IDR': 'Rp ', // Rupia Indonésia
+    'ILS': '₪ ', // Novo Shekel Israelense
+    'INR': '₹ ', // Rupia Indiana
+    'ISK': 'kr ', // Coroa Islandesa
+    'JPY': '¥ ', // Iene Japonês
+    'KRW': '₩ ', // Won Sul-Coreano
+    'MXN': 'Mex\$ ', // Peso Mexicano
+    'MYR': 'RM ', // Ringgit Malaio
+    'NOK': 'kr ', // Coroa Norueguesa
+    'NZD': 'NZ\$ ', // Dólar Neozelandês
+    'PHP': '₱ ', // Peso Filipino
+    'PLN': 'zł ', // Złoty Polonês
+    'RON': 'lei ', // Leu Romeno
+    'RUB': '₽ ', // Rublo Russo
+    'SEK': 'kr ', // Coroa Sueca
+    'SGD': 'S\$ ', // Dólar de Singapura
+    'THB': '฿ ', // Baht Tailandês
+    'TRY': '₺ ', // Lira Turca
+    'USD': '\$ ', // Dólar Americano
+    'ZAR': 'R ', // Rand Sul-Africano
+  };
+
   static String getCountryCode({required String currencyCode}) {
     return currencyToCountry[currencyCode] ?? "Código não encontrado";
+  }
+
+  static String getCurrencySymbols({required String currencyCode}) {
+    return currencySymbolsList[currencyCode] ?? "";
   }
 }

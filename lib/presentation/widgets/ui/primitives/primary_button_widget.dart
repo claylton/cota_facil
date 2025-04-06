@@ -3,20 +3,29 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class PrimaryButtonWidget extends StatelessWidget {
-  const PrimaryButtonWidget({super.key});
+  final bool? disabled;
+  final Function() onPressed;
+
+  const PrimaryButtonWidget({
+    super.key,
+    this.disabled = false,
+    required this.onPressed,
+  });
 
   @override
   Widget build(BuildContext context) {
     return TextButton(
       style: ButtonStyle(
-        backgroundColor: WidgetStateProperty.all(ColorPalette.primary100),
+        backgroundColor: WidgetStateProperty.resolveWith<Color>(
+          (Set<WidgetState> states) => states.contains(WidgetState.disabled) ? ColorPalette.black60 : ColorPalette.primary100,
+        ),
         shape: WidgetStateProperty.all(
           RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8.0), // Remove o arredondamento
           ),
         ),
       ),
-      onPressed: () {},
+      onPressed: disabled == true ? null : onPressed,
       child: Container(
         height: 36,
         alignment: Alignment.center,
